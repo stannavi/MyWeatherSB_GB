@@ -11,7 +11,7 @@ import java.lang.IllegalStateException
 import java.lang.Thread.sleep
 
 
-class WeatherListVeiwModel(
+class WeatherListViewModel(
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class WeatherListVeiwModel(
     fun sentRequest() {
         //choiceRepository()
         liveData.value = AppState.Loading
-        if ((0..3).random() == 1) {//fixme
+        if ((0..3).random() == 2) {//fixme
             liveData.postValue(AppState.Error(throw  IllegalStateException("что-то пошло не так")))
         } else {
             liveData.postValue(

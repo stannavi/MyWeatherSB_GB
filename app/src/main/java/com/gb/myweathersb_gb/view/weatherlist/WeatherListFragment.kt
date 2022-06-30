@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,7 +16,7 @@ class WeatherListFragment : Fragment() {
     }
 
     lateinit var binding: FragmentWeatherListBinding
-    lateinit var viewModel: WeatherListVeiwModel
+    lateinit var viewModel: WeatherListViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,7 +28,7 @@ class WeatherListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(WeatherListVeiwModel::class.java)
+        viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
             override fun onChanged(t: AppState) {
                 renderData(t)
@@ -48,7 +47,7 @@ class WeatherListFragment : Fragment() {
                 binding.temperatureValue.text = result.temperature.toString()
                 binding.feelsLikeValue.text = result.feelsLike.toString()
                 binding.cityCoordinates.text = "${result.city.lat}/${result.city.lon}"
-                Toast.makeText(requireContext(), "РАБОТАЕТ $result", Toast.LENGTH_LONG).show()
+                //Toast.makeText(requireContext(), "РАБОТАЕТ $result", Toast.LENGTH_LONG).show()
             }
         }
     }
