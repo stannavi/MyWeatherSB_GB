@@ -2,7 +2,15 @@ package com.gb.myweathersb_gb.model
 
 import com.gb.myweathersb_gb.domain.Weather
 
-interface Repository {
-    fun getListWeather():List<Weather>
+fun interface RepositorySingle {
     fun getWeather(lat: Double, lon: Double):Weather
+}
+
+fun interface RepositoryMulti {
+    fun getListWeather(location: Location):List<Weather>
+}
+
+sealed class Location {
+    object Russian: Location()
+    object World: Location()
 }

@@ -2,9 +2,8 @@ package com.gb.myweathersb_gb
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import com.gb.myweathersb_gb.databinding.ActivityMainBinding
-import com.gb.myweathersb_gb.view.weatherlist.WeatherListFragment
+import com.gb.myweathersb_gb.viewmodel.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
 
