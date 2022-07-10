@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_earth.xml" value="0.112" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21458333333333332" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.24939172749391728" />
         <entry key="app/src/main/res/layout/fragment_main.xml" value="0.21458333333333332" />
         <entry key="app/src/main/res/layout/fragment_weather_list.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_weather_list_recycle_item.xml" value="0.21354166666666666" />

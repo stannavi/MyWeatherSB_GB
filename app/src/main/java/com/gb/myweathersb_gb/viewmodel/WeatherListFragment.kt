@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.gb.myweathersb_gb.MainActivity
 import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentWeatherListBinding
+import com.gb.myweathersb_gb.domain.Weather
+import com.gb.myweathersb_gb.view.details.DetailsFragment
+import com.gb.myweathersb_gb.view.details.OnItemClick
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = WeatherListFragment()
     }
@@ -19,9 +23,9 @@ class WeatherListFragment : Fragment() {
 
     var _binding: FragmentWeatherListBinding? = null
     val binding: FragmentWeatherListBinding
-    get(){
-        return _binding!!
-    }
+        get() {
+            return _binding!!
+        }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -63,15 +67,24 @@ class WeatherListFragment : Fragment() {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> { /*TODO HW*/ }
-            AppState.Loading -> { /*TODO HW*/ }
+            is AppState.Error -> { /*TODO HW*/
+            }
+            AppState.Loading -> { /*TODO HW*/
+            }
             is AppState.SuccessSingle -> {
                 val result = appState.weatherData
             }
             is AppState.SuccessMulti -> {
-                binding.mainFragmentRecyclerView.adapter = WeatherListAdapter(appState.weatherList)
+                binding.mainFragmentRecyclerView.adapter =
+                    WeatherListAdapter(appState.weatherList, this)
 
             }
         }
+    }
+
+    override fun onItemClick(weather: Weather) {
+        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
+            R.id.container, DetailsFragment.newInstance(weather)
+        ).addToBackStack("").commit()
     }
 }
