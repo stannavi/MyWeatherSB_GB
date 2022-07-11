@@ -3,6 +3,7 @@ package com.gb.myweathersb_gb.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gb.myweathersb_gb.model.*
+import kotlin.random.Random
 
 
 class WeatherListViewModel(
@@ -37,16 +38,18 @@ class WeatherListViewModel(
     private fun sentRequest(location: Location) {
         //choiceRepository()
         liveData.value = AppState.Loading
-        if (false) {//fixme
-            liveData.postValue(AppState.Error(throw IllegalStateException("что-то пошло не так")))
-        } else {
-            liveData.postValue(
-                AppState.SuccessMulti(
-                    repositoryMulti.getListWeather(location)
+        Thread {
+            Thread.sleep(3000L)
+            if ((0..3).random(Random(System.currentTimeMillis())) == 1) {
+                liveData.postValue(AppState.Error(IllegalStateException("что-то пошло не так")))
+            } else {
+                liveData.postValue(
+                    AppState.SuccessMulti(
+                        repositoryMulti.getListWeather(location)
+                    )
                 )
-            )
-        }
-
+            }
+        }.start()
     }
 
     private fun isConnection(): Boolean {

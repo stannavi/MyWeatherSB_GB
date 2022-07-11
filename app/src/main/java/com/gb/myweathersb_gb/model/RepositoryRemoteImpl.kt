@@ -8,9 +8,7 @@ import com.gb.myweathersb_gb.viewmodel.AppState
 class RepositoryRemoteImpl: RepositorySingle {
 
     override fun getWeather(lat: Double, lon: Double): Weather {
-        Thread {
-            Thread.sleep(300L)
-        }.start()
+
         return Weather()
     }
 }

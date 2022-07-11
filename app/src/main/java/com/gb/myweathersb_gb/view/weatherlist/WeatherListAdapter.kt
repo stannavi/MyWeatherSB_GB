@@ -1,14 +1,11 @@
-package com.gb.myweathersb_gb.viewmodel
+package com.gb.myweathersb_gb.view.weatherlist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gb.myweathersb_gb.MainActivity
-import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentWeatherListRecyclerItemBinding
 import com.gb.myweathersb_gb.domain.Weather
-import com.gb.myweathersb_gb.view.details.DetailsFragment
 import com.gb.myweathersb_gb.view.details.OnItemClick
 
 class WeatherListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :

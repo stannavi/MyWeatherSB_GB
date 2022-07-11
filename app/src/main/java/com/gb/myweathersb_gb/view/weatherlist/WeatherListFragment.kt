@@ -1,4 +1,4 @@
-package com.gb.myweathersb_gb.viewmodel
+package com.gb.myweathersb_gb.view.weatherlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.gb.myweathersb_gb.MainActivity
 import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentWeatherListBinding
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.view.details.DetailsFragment
 import com.gb.myweathersb_gb.view.details.OnItemClick
+import com.gb.myweathersb_gb.viewmodel.AppState
+import com.gb.myweathersb_gb.viewmodel.WeatherListViewModel
 
 class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
