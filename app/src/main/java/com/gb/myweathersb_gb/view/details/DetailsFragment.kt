@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.gb.myweathersb_gb.databinding.FragmentDetailsBinding
 import com.gb.myweathersb_gb.domain.Weather
 
@@ -39,25 +37,62 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //val weather=  arguments?.get(BUNDLE_WEATHER_EXTRA)
-        val weather = (arguments?.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA))
+        arguments?.apply { }
+        arguments?.also { }
+        arguments?.run { }
+        val weather = arguments?.let { arg ->
+            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
+        }
+        val weather2 = arguments?.run {
+            this.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
+            getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
+        }
         if (weather != null)
             renderData(weather)
     }
 
     private fun renderData(weather: Weather) {
-        binding.cityName.text = weather.city.name
-        binding.temperatureValue.text = weather.temperature.toString()
-        binding.feelsLikeValue.text = weather.feelsLike.toString()
-        binding.cityCoordinates.text = "${weather.city.lat}/${weather.city.lon}"
+        binding?.apply {
+            this.cityName
+            cityName
+        }
+        val resAlso = binding?.also { newIt ->
+            newIt.cityName.text = ""
+            val resLet = binding?.let { bindingMy ->
+                bindingMy.cityName.toString()
+                bindingMy.cityCoordinates.toString()
+            }
+        }
+        val resAlso2 = binding?.also { qwwqr ->
+            qwwqr.cityName.text = ""
+            val resLet = binding?.run {
+                cityName.toString()
+                cityCoordinates.toString()
+            }
+        }
+        val resRun = binding?.run { cityName.toString() }
+
+        with(binding) {
+            cityName.text = weather.city.name
+            temperatureValue.text = weather.temperature.toString()
+            feelsLikeValue.text = weather.feelsLike.toString()
+            cityCoordinates.text = "${weather.city.lat}/${weather.city.lon}"
+        }
+
     }
 
     companion object {
         const val BUNDLE_WEATHER_EXTRA = "sgrrdfge"
         fun newInstance(weather: Weather): DetailsFragment {
-            val bundle = Bundle()
-            bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
             val fr = DetailsFragment()
-            fr.arguments = bundle
+
+            fr.arguments = Bundle().apply {
+                this.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+                putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+            }
+            fr.arguments = Bundle().also {
+                it.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+            }
             return fr
         }
     }

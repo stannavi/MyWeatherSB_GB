@@ -1,7 +1,7 @@
 package com.gb.myweathersb_gb
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.gb.myweathersb_gb.databinding.ActivityMainBinding
 import com.gb.myweathersb_gb.view.weatherlist.WeatherListFragment
 
