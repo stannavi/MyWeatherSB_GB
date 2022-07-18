@@ -14,6 +14,8 @@ import com.gb.myweathersb_gb.view.details.DetailsFragment
 import com.gb.myweathersb_gb.view.details.OnItemClick
 import com.gb.myweathersb_gb.viewmodel.AppState
 import com.gb.myweathersb_gb.viewmodel.WeatherListViewModel
+import com.google.android.material.snackbar.Snackbar
+import java.time.Duration
 
 class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
@@ -57,7 +59,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
             isRussian = !isRussian
             if (isRussian) {
                 viewModel.getWeatherListForRussia()
-                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+                binding.weatherListFragmentFAB.apply {
+                    setImageResource(R.drawable.ic_russia)
+                }
             } else {
                 viewModel.getWeatherListForWorld()
                 binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
@@ -69,22 +73,47 @@ class WeatherListFragment : Fragment(), OnItemClick {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
+                binding.showResult()
+                binding.root.HW2("Ошибка", Snackbar.LENGTH_SHORT, "Попробовать ещё раз") { _ ->
+                    if (isRussian) {
+                        viewModel.getWeatherListForRussia()
+                    } else {
+                        viewModel.getWeatherListForWorld()
+                    }
+                }
             }
             AppState.Loading -> {
-                binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
+                binding.loading()
             }
             is AppState.SuccessSingle -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
+                binding.showResult()
                 val result = appState.weatherData
             }
             is AppState.SuccessMulti -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
+                binding.showResult()
                 binding.mainFragmentRecyclerView.adapter =
                     WeatherListAdapter(appState.weatherList, this)
 
             }
         }
+    }
+
+    fun View.HW(string: String, duration: Int) {
+        Snackbar.make(this, string, duration).show()
+    }
+
+    fun View.HW2(string: String, duration: Int, actionString: String, block:(v:View)->Unit) {
+        Snackbar.make(this, string, duration).setAction("Попробовать ещё раз", block).show()
+    }
+
+    fun FragmentWeatherListBinding.loading() {
+        this.mainFragmentLoadingLayout.visibility = View.VISIBLE
+        this.weatherListFragmentFAB.visibility = View.GONE
+    }
+
+    fun FragmentWeatherListBinding.showResult() {
+        this.mainFragmentLoadingLayout.visibility = View.GONE
+        this.weatherListFragmentFAB.visibility = View.VISIBLE
     }
 
     override fun onItemClick(weather: Weather) {

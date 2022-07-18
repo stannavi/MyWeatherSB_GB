@@ -36,19 +36,11 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //val weather=  arguments?.get(BUNDLE_WEATHER_EXTRA)
-        arguments?.apply { }
-        arguments?.also { }
-        arguments?.run { }
-        val weather = arguments?.let { arg ->
-            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
+        arguments?.let { arg ->
+            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)?.let { weather ->
+                renderData(weather)
+            }
         }
-        val weather2 = arguments?.run {
-            this.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
-            getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
-        }
-        if (weather != null)
-            renderData(weather)
     }
 
     private fun renderData(weather: Weather) {
@@ -83,19 +75,15 @@ class DetailsFragment : Fragment() {
 
     companion object {
         const val BUNDLE_WEATHER_EXTRA = "sgrrdfge"
-        fun newInstance(weather: Weather): DetailsFragment {
-            val fr = DetailsFragment()
-
+        fun newInstance(weather: Weather) = DetailsFragment().also { fr ->
             fr.arguments = Bundle().apply {
-                this.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+                putParcelable(BUNDLE_WEATHER_EXTRA, weather)
                 putParcelable(BUNDLE_WEATHER_EXTRA, weather)
             }
-            fr.arguments = Bundle().also {
-                it.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+            fr.arguments = Bundle().also { bundle ->
+                bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
+                bundle.putParcelable(BUNDLE_WEATHER_EXTRA, weather)
             }
-            return fr
         }
     }
-
-
 }
