@@ -2,6 +2,7 @@ package com.gb.myweathersb_gb.utils
 
 import android.os.Handler
 import android.os.Looper
+import com.gb.myweathersb_gb.BuildConfig
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.view.details.OnReponse
 import com.google.gson.Gson
@@ -23,7 +24,7 @@ object WeatherLoader {// TODO HW 5 try catch
         myConnection.readTimeout = 5000
         myConnection.addRequestProperty(
             "X-Yandex-API-Key",
-            "cb4e3f81-12fa-45e8-8b28-6de21efd187e"
+            BuildConfig.WEATHER_API_KEY
         )
 
         Thread {
@@ -43,7 +44,7 @@ object WeatherLoader {// TODO HW 5 try catch
         myConnection.readTimeout = 5000
         myConnection.addRequestProperty(
             "X-Yandex-API-Key",
-            "cb4e3f81-12fa-45e8-8b28-6de21efd187e"
+            BuildConfig.WEATHER_API_KEY
         )
 
         Thread {
