@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.gb.myweathersb_gb.databinding.FragmentDetailsBinding
 import com.gb.myweathersb_gb.domain.Weather
+import com.gb.myweathersb_gb.model.dto.WeatherDTO
+import com.gb.myweathersb_gb.utils.WeatherLoader
 
 
 class DetailsFragment : Fragment() {
-
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding
@@ -22,7 +23,6 @@ class DetailsFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,33 +36,39 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let { arg ->
-            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)?.let { weather ->
-                renderData(weather)
+        val weather = arguments?.let { arg ->
+            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
+        }
+
+        weather?.let { weatherLocal ->
+            WeatherLoader.requestFirstVariant(
+                weatherLocal.city.lat,
+                weatherLocal.city.lon
+            ) { weatherDTO ->
+                bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
+            }
+            WeatherLoader.requestSecondVariant(
+                weatherLocal.city.lat,
+                weatherLocal.city.lon
+            ) { weatherDTO ->
+                bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
             }
         }
     }
 
+    private fun bindWeatherLocalWithWeatherDTO(
+        weatherLocal: Weather,
+        weatherDTO: WeatherDTO
+    ) {
+        requireActivity().runOnUiThread{
+            renderData(weatherLocal.apply {
+                weatherLocal.feelsLike = weatherDTO.fact.feelsLike
+                weatherLocal.temperature = weatherDTO.fact.temp
+            })
+        }
+    }
+
     private fun renderData(weather: Weather) {
-        binding?.apply {
-            this.cityName
-            cityName
-        }
-        val resAlso = binding?.also { newIt ->
-            newIt.cityName.text = ""
-            val resLet = binding?.let { bindingMy ->
-                bindingMy.cityName.toString()
-                bindingMy.cityCoordinates.toString()
-            }
-        }
-        val resAlso2 = binding?.also { qwwqr ->
-            qwwqr.cityName.text = ""
-            val resLet = binding?.run {
-                cityName.toString()
-                cityCoordinates.toString()
-            }
-        }
-        val resRun = binding?.run { cityName.toString() }
 
         with(binding) {
             cityName.text = weather.city.name
@@ -70,7 +76,6 @@ class DetailsFragment : Fragment() {
             feelsLikeValue.text = weather.feelsLike.toString()
             cityCoordinates.text = "${weather.city.lat}/${weather.city.lon}"
         }
-
     }
 
     companion object {
