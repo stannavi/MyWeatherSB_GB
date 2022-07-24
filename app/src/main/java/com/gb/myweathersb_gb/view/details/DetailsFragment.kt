@@ -1,13 +1,22 @@
 package com.gb.myweathersb_gb.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.gb.myweathersb_gb.databinding.FragmentDetailsBinding
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
+import com.gb.myweathersb_gb.utils.BUNDLE_CITY_KEY
+import com.gb.myweathersb_gb.utils.BUNDLE_WEATHER_DTO_KEY
+import com.gb.myweathersb_gb.utils.WAVE
 import com.gb.myweathersb_gb.utils.WeatherLoader
 
 
@@ -19,9 +28,23 @@ class DetailsFragment : Fragment() {
             return _binding!!
         }
 
+    val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                Log.d("@@@", "onReceive ${binding.root}")
+                intent?.let {
+                    it.getParcelableExtra<WeatherDTO>(BUNDLE_WEATHER_DTO_KEY)?.let { weatherDTO ->
+                        bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
+                    }
+                }
+            }
+        }
+
+    lateinit var weatherLocal: Weather
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
     }
 
     override fun onCreateView(
@@ -41,19 +64,25 @@ class DetailsFragment : Fragment() {
         }
 
         weather?.let { weatherLocal ->
-
+            this.weatherLocal = weatherLocal
             WeatherLoader.requestFirstVariant(
                 weatherLocal.city.lat,
-                weatherLocal.city.lon
-            ) { weatherDTO ->
-                bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
-            }
-            WeatherLoader.requestSecondVariant(
-                weatherLocal.city.lat,
-                weatherLocal.city.lon
-            ) { weatherDTO ->
-                bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
-            }
+                weatherLocal.city.lon,
+                object : OnReponse {
+                    override fun onResponse(weather: WeatherDTO) {
+
+                    }
+                }
+            )
+
+            LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                receiver,
+                IntentFilter(WAVE)
+            )
+
+            requireActivity().startService(Intent(requireContext(), DetailServiceIntent::class.java).apply {
+                putExtra(BUNDLE_CITY_KEY, weatherLocal.city)
+            })
         }
     }
 
@@ -61,7 +90,7 @@ class DetailsFragment : Fragment() {
         weatherLocal: Weather,
         weatherDTO: WeatherDTO
     ) {
-        requireActivity().runOnUiThread{
+        requireActivity().runOnUiThread {
             renderData(weatherLocal.apply {
                 weatherLocal.feelsLike = weatherDTO.fact.feelsLike
                 weatherLocal.temperature = weatherDTO.fact.temp

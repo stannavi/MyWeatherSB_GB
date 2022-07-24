@@ -1,8 +1,11 @@
 package com.gb.myweathersb_gb.model.dto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class PartDTO(
     val condition: String,
     val daytime: String,
@@ -35,4 +38,4 @@ data class PartDTO(
     val windGust: Double,
     @SerializedName("wind_speed")
     val windSpeed: Double
-)
+): Parcelable

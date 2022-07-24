@@ -1,8 +1,11 @@
 package com.gb.myweathersb_gb.model.dto
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ForecastDTO(
     val date: String,
     @SerializedName("date_ts")
@@ -15,4 +18,4 @@ data class ForecastDTO(
     val sunrise: String,
     val sunset: String,
     val week: Int
-)
+): Parcelable
