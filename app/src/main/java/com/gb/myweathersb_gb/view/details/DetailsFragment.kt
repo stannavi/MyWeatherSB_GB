@@ -41,6 +41,7 @@ class DetailsFragment : Fragment() {
         }
 
         weather?.let { weatherLocal ->
+
             WeatherLoader.requestFirstVariant(
                 weatherLocal.city.lat,
                 weatherLocal.city.lon
