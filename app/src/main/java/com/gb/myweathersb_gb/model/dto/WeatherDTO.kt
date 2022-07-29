@@ -7,10 +7,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class WeatherDTO(
-    val fact: FactDTO,
-    val forecast: ForecastDTO,
-    val info: InfoDTO,
-    val now: Int,
-    @SerializedName("now_dt")
-    val nowDt: String
+    val fact: FactDTO
 ): Parcelable

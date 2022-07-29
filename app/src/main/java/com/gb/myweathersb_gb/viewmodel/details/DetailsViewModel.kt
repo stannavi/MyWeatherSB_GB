@@ -1,9 +1,13 @@
 package com.gb.myweathersb_gb.viewmodel.details
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gb.myweathersb_gb.model.*
+import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.viewmodel.citieslist.CityListFragmentAppState
+import java.io.IOException
 import kotlin.random.Random
 
 
@@ -40,9 +44,22 @@ class DetailsViewModel(
     fun getWeather(lat: Double, lon: Double) {
         choiceRepository()
         liveData.value = DetailsFragmentAppState.Loading
-        //liveData.postValue(DetailsFragmentAppState.Error(IllegalStateException("что-то пошло не так")))
+        repository.getWeather(lat, lon, callback)
 
-        liveData.postValue(DetailsFragmentAppState.Success(repository.getWeather(lat, lon)))
+    }
+
+    val callback = object: MyLargeSuperCallback {
+        override fun onResponse(weatherDTO: WeatherDTO) {
+            /*Handler(Looper.getMainLooper()).post {
+
+            }*/
+            liveData.postValue(DetailsFragmentAppState.Success(weatherDTO))
+        }
+
+        override fun onFailure(e: IOException) {
+            liveData.postValue(DetailsFragmentAppState.Error(e))
+        }
+
     }
 
     private fun isConnection(): Boolean {
