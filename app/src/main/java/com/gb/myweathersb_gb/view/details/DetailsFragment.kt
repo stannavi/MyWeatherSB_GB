@@ -17,9 +17,8 @@ import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.utils.*
 import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import java.io.IOException
 
 
 class DetailsFragment : Fragment() {
@@ -31,15 +30,15 @@ class DetailsFragment : Fragment() {
         }
 
     val receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                Log.d("@@@", "onReceive ${binding.root}")
-                intent?.let {
-                    it.getParcelableExtra<WeatherDTO>(BUNDLE_WEATHER_DTO_KEY)?.let { weatherDTO ->
-                        bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
-                    }
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("@@@", "onReceive ${binding.root}")
+            intent?.let {
+                it.getParcelableExtra<WeatherDTO>(BUNDLE_WEATHER_DTO_KEY)?.let { weatherDTO ->
+                    bindWeatherLocalWithWeatherDTO(weatherLocal, weatherDTO)
                 }
             }
         }
+    }
 
     lateinit var weatherLocal: Weather
 
@@ -92,25 +91,30 @@ class DetailsFragment : Fragment() {
             builder.url("https://api.weather.yandex.ru/v2/informers?lat=${weatherLocal.city.lat}&lon=${weatherLocal.city.lon}")
             val request: Request = builder.build()
             val call: Call = client.newCall(request)
-            Thread {
-                val response = call.execute()
-                if(response.isSuccessful) {}
 
-                if(response.code in 200..299) {
-                    response.body?.let {
-                        val responseString = it.string()
-                        val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
-                        weatherLocal.feelsLike = weatherDTO.fact.feelsLike
-                        weatherLocal.temperature = weatherDTO.fact.temp
-                        requireActivity().runOnUiThread {
-                            renderData(weatherLocal)
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    // TODO HW
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    //if (response.isSuccessful) { }
+                    if (response.code in 200..299 && response.body != null) {
+                        response.body?.let {
+                            val responseString = it.string()
+                            val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
+                            weatherLocal.feelsLike = weatherDTO.fact.feelsLike
+                            weatherLocal.temperature = weatherDTO.fact.temp
+                            requireActivity().runOnUiThread {
+                                renderData(weatherLocal)
+                            }
+                            Log.d("@@@", "${responseString}")
                         }
-                        Log.d("@@@", "${responseString}")
+                    } else {
+                        // TODO HW
                     }
                 }
-            }.start()
-
-
+            })
         }
     }
 

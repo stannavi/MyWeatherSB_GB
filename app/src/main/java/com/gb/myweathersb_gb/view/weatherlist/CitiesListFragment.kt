@@ -12,14 +12,13 @@ import com.gb.myweathersb_gb.databinding.FragmentWeatherListBinding
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.view.details.DetailsFragment
 import com.gb.myweathersb_gb.view.details.OnItemClick
-import com.gb.myweathersb_gb.viewmodel.AppState
-import com.gb.myweathersb_gb.viewmodel.WeatherListViewModel
+import com.gb.myweathersb_gb.viewmodel.citieslist.CityListFragmentAppState
+import com.gb.myweathersb_gb.viewmodel.citieslist.CitiesListViewModel
 import com.google.android.material.snackbar.Snackbar
-import java.time.Duration
 
-class WeatherListFragment : Fragment(), OnItemClick {
+class CitiesListFragment : Fragment(), OnItemClick {
     companion object {
-        fun newInstance() = WeatherListFragment()
+        fun newInstance() = CitiesListFragment()
     }
 
     var isRussian = true
@@ -35,8 +34,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
         _binding = null
     }
 
-    private val viewModel: WeatherListViewModel by lazy {
-        ViewModelProvider(this).get(WeatherListViewModel::class.java)
+    private val viewModel: CitiesListViewModel by lazy {
+        ViewModelProvider(this).get(CitiesListViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -51,8 +50,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(t: AppState) {
+        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<CityListFragmentAppState> {
+            override fun onChanged(t: CityListFragmentAppState) {
                 renderData(t)
             }
         })
@@ -73,9 +72,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
         viewModel.getWeatherListForRussia()
     }
 
-    private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Error -> {
+    private fun renderData(cityListFragmentAppState: CityListFragmentAppState) {
+        when (cityListFragmentAppState) {
+            is CityListFragmentAppState.Error -> {
                 binding.showResult()
                 binding.root.HW2("Ошибка", Snackbar.LENGTH_SHORT, "Попробовать ещё раз") { _ ->
                     if (isRussian) {
@@ -85,17 +84,17 @@ class WeatherListFragment : Fragment(), OnItemClick {
                     }
                 }
             }
-            AppState.Loading -> {
+            CityListFragmentAppState.Loading -> {
                 binding.loading()
             }
-            is AppState.SuccessSingle -> {
+            is CityListFragmentAppState.SuccessSingle -> {
                 binding.showResult()
-                val result = appState.weatherData
+                val result = cityListFragmentAppState.weatherData
             }
-            is AppState.SuccessMulti -> {
+            is CityListFragmentAppState.SuccessMulti -> {
                 binding.showResult()
                 binding.mainFragmentRecyclerView.adapter =
-                    WeatherListAdapter(appState.weatherList, this)
+                    DetailsListAdapter(cityListFragmentAppState.weatherList, this)
 
             }
         }

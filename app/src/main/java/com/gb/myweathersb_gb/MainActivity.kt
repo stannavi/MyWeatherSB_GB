@@ -3,7 +3,7 @@ package com.gb.myweathersb_gb
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gb.myweathersb_gb.databinding.ActivityMainBinding
-import com.gb.myweathersb_gb.view.weatherlist.WeatherListFragment
+import com.gb.myweathersb_gb.view.weatherlist.CitiesListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, WeatherListFragment.newInstance()).commit()
+                .replace(R.id.container, CitiesListFragment.newInstance()).commit()
         }
     }
 }

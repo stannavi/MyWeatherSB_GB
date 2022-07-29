@@ -12,7 +12,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-object WeatherLoader {// TODO HW 5 try catch
+object WeatherLoader { //TODO HW 5 try catch
 
     fun requestFirstVariant(lat: Double, lon: Double, onResponse: OnReponse) {
         val uri =
