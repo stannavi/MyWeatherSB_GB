@@ -1,10 +1,13 @@
 package com.gb.myweathersb_gb.viewmodel.details
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.gb.myweathersb_gb.MyApp
 import com.gb.myweathersb_gb.model.*
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.model.retrofit.RepositoryDetailsRetrofitImpl
+import com.gb.myweathersb_gb.utils.SP_BD_NAME_IS_RUSSIAN
 import java.io.IOException
 
 
@@ -20,7 +23,8 @@ class DetailsViewModel(
     }
 
     private fun choiceRepository() {
-        repository = when (1) {
+        val sp = MyApp.getMyApp().getSharedPreferences("db_source", Context.MODE_PRIVATE)
+        repository = when (sp.getInt("sdgsdg", 2)) {
             1 -> {
                 RepositoryDetailsOKHttpImpl()
             }
@@ -39,6 +43,7 @@ class DetailsViewModel(
 
 
     fun getWeather(lat: Double, lon: Double) {
+
         choiceRepository()
         liveData.value = DetailsFragmentAppState.Loading
         repository.getWeather(lat, lon, callback)

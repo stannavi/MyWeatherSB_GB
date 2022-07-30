@@ -1,5 +1,6 @@
 package com.gb.myweathersb_gb.view.weatherlist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentWeatherListBinding
 import com.gb.myweathersb_gb.domain.Weather
+import com.gb.myweathersb_gb.utils.SP_BD_NAME_IS_RUSSIAN
+import com.gb.myweathersb_gb.utils.SP_KEY_IS_RUSSIAN
 import com.gb.myweathersb_gb.view.details.DetailsFragment
 import com.gb.myweathersb_gb.view.details.OnItemClick
 import com.gb.myweathersb_gb.viewmodel.citieslist.CityListFragmentAppState
@@ -68,6 +71,10 @@ class CitiesListFragment : Fragment(), OnItemClick {
                 viewModel.getWeatherListForWorld()
                 binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_earth)
             }
+            val sp = requireActivity().getSharedPreferences(SP_BD_NAME_IS_RUSSIAN, Context.MODE_PRIVATE)
+            val editor = sp.edit()
+            editor.putBoolean(SP_KEY_IS_RUSSIAN, isRussian)
+            editor.apply()
         }
         viewModel.getWeatherListForRussia()
     }
