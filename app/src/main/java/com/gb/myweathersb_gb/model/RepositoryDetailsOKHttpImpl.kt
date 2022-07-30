@@ -34,7 +34,7 @@ class RepositoryDetailsOKHttpImpl: RepositoryDetails {
                         callback.onResponse(weatherDTO)
                     }
                 } else {
-                    // TODO HW callback.on???
+                    // TODO HW callback.on??? 403 404
                     callback.onFailure(IOException("403 404"))
                 }
             }

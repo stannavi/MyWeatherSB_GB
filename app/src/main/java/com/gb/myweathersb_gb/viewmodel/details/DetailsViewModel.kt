@@ -1,14 +1,11 @@
 package com.gb.myweathersb_gb.viewmodel.details
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gb.myweathersb_gb.model.*
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
-import com.gb.myweathersb_gb.viewmodel.citieslist.CityListFragmentAppState
+import com.gb.myweathersb_gb.model.retrofit.RepositoryDetailsRetrofitImpl
 import java.io.IOException
-import kotlin.random.Random
 
 
 class DetailsViewModel(
