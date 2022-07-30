@@ -12,7 +12,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.bumptech.glide.Glide
 import com.gb.myweathersb_gb.BuildConfig
+import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentDetailsBinding
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
@@ -20,6 +24,7 @@ import com.gb.myweathersb_gb.utils.*
 import com.gb.myweathersb_gb.viewmodel.details.DetailsFragmentAppState
 import com.gb.myweathersb_gb.viewmodel.details.DetailsViewModel
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import okhttp3.*
 import java.io.IOException
 
@@ -76,6 +81,20 @@ class DetailsFragment : Fragment() {
                     temperatureValue.text = weatherDTO.fact.temp.toString()
                     feelsLikeValue.text = weatherDTO.fact.feelsLike.toString()
                     cityCoordinates.text = "${weatherLocal.city.lat}/${weatherLocal.city.lon}"
+                    icon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png") {
+                        error(R.drawable.ic_earth)
+                        placeholder(R.drawable.ic_launcher_background)
+                        transformations(CircleCropTransformation())
+                    }
+
+                   /* Glide.with(this.root)
+                        .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                        .into(icon)
+
+                    Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                        .into(icon)*/
+
+                    //icon.load("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
                 }
             }
         }

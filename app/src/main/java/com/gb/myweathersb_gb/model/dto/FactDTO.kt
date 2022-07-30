@@ -10,4 +10,5 @@ data class FactDTO(
     @SerializedName("feels_like")
     val feelsLike: Int,
     val temp: Int,
+    val icon: String="skc_d"
 ): Parcelable
