@@ -10,8 +10,8 @@ data class WeatherEntity(
     val name: String,
     val lat: Double,
     val lon: Double,
-    var temperature: Int = 20,
-    var feelsLike: Int = 20
+    var temperature: Int,
+    var feelsLike: Int
 )
 
 

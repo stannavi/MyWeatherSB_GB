@@ -1,36 +1,19 @@
 package com.gb.myweathersb_gb.view.details
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.ImageLoader
 import coil.decode.SvgDecoder
-import coil.load
 import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
-import com.bumptech.glide.Glide
-import com.gb.myweathersb_gb.BuildConfig
-import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentDetailsBinding
 import com.gb.myweathersb_gb.domain.Weather
-import com.gb.myweathersb_gb.model.dto.WeatherDTO
-import com.gb.myweathersb_gb.utils.*
 import com.gb.myweathersb_gb.viewmodel.details.DetailsFragmentAppState
 import com.gb.myweathersb_gb.viewmodel.details.DetailsViewModel
-import com.google.gson.Gson
-import com.squareup.picasso.Picasso
-import okhttp3.*
-import java.io.IOException
 
 
 class DetailsFragment : Fragment() {
@@ -62,8 +45,7 @@ class DetailsFragment : Fragment() {
             arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
         }
 
-        weather?.let { weatherLocal ->
-            viewModel.getWeather(weatherLocal)
+        weather?.let {
             viewModel.getLiveData().observe(viewLifecycleOwner) {
                 renderData(it)
             }
@@ -83,15 +65,13 @@ class DetailsFragment : Fragment() {
                     temperatureValue.text = weather.temperature.toString()
                     feelsLikeValue.text = weather.feelsLike.toString()
                     cityCoordinates.text = "${weather.city.lat}/${weather.city.lon}"
-
-
                     icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
                 }
             }
         }
     }
 
-    fun ImageView.loadUrl(url: String) {
+    private fun ImageView.loadUrl(url: String) {
 
         val imageLoader = ImageLoader.Builder(this.context)
             .componentRegistry{add(SvgDecoder(this@loadUrl.context))}

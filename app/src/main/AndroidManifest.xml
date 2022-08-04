@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".view.details.DetailServiceIntent"
+        <service android:name=".view.details.DetailsServiceIntent"
             android:exported="true"/>
     </application>
 

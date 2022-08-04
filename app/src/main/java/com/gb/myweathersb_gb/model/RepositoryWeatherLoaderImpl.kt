@@ -13,8 +13,8 @@ import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class RepositoryDetailsWeatherLoaderImpl: RepositoryWeatherByCity {
-    override fun getWeather(city: City, callback: CommonOneWeatherCallback) {
+class RepositoryWeatherLoaderImpl: RepositoryWeatherByCity {
+    override fun getWeather(city: City, callback: CommonWeatherCallback) {
 
         Thread {
             val uri =

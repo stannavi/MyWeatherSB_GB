@@ -52,13 +52,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<CityListFragmentAppState> {
-            override fun onChanged(t: CityListFragmentAppState) {
-                renderData(t)
-            }
-        })
-
+        viewModel.getLiveData().observe(viewLifecycleOwner) {t -> renderData(t)}
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
@@ -83,13 +77,6 @@ class CitiesListFragment : Fragment(), OnItemClick {
         when (cityListFragmentAppState) {
             is CityListFragmentAppState.Error -> {
                 binding.showResult()
-                binding.root.HW2("Ошибка", Snackbar.LENGTH_SHORT, "Попробовать ещё раз") { _ ->
-                    if (isRussian) {
-                        viewModel.getWeatherListForRussia()
-                    } else {
-                        viewModel.getWeatherListForWorld()
-                    }
-                }
             }
             CityListFragmentAppState.Loading -> {
                 binding.loading()
@@ -101,18 +88,10 @@ class CitiesListFragment : Fragment(), OnItemClick {
             is CityListFragmentAppState.SuccessMulti -> {
                 binding.showResult()
                 binding.mainFragmentRecyclerView.adapter =
-                    DetailsListAdapter(cityListFragmentAppState.weatherList, this)
+                    CitiesListAdapter(cityListFragmentAppState.weatherList, this)
 
             }
         }
-    }
-
-    fun View.HW(string: String, duration: Int) {
-        Snackbar.make(this, string, duration).show()
-    }
-
-    fun View.HW2(string: String, duration: Int, actionString: String, block:(v:View)->Unit) {
-        Snackbar.make(this, string, duration).setAction(actionString, block).show()
     }
 
     fun FragmentCitiesListBinding.loading() {

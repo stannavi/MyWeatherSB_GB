@@ -10,7 +10,7 @@ import okhttp3.*
 import java.io.IOException
 
 class RepositoryOKHttpImpl: RepositoryWeatherByCity {
-    override fun getWeather(city: City, callback: CommonOneWeatherCallback) {
+    override fun getWeather(city: City, callback: CommonWeatherCallback) {
 
         val client = OkHttpClient()
         val builder = Request.Builder()

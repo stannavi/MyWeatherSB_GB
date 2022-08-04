@@ -5,8 +5,8 @@ import com.gb.myweathersb_gb.domain.City
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.model.room.WeatherEntity
 
-class RepositoryRoomImpl: RepositoryWeatherByCity, RepositoryWeatherAdd, RepositoryWeatherAvailable {
-    override fun getWeather(city: City, callback: CommonOneWeatherCallback) {
+class RepositoryRoomImpl: RepositoryWeatherByCity, RepositoryWeatherSave, RepositoryWeatherAvailable {
+    override fun getWeather(city: City, callback: CommonWeatherCallback) {
 
         callback.onResponse(MyApp.getWeatherDatabase().weatherDao().getWeatherByLocation(city.lat, city.lon).let {
             convertHistoryEntityToWeather(it).last()
@@ -30,7 +30,6 @@ class RepositoryRoomImpl: RepositoryWeatherByCity, RepositoryWeatherAdd, Reposit
     private fun convertWeatherToEntity(weather: Weather): WeatherEntity {
         return WeatherEntity(0, weather.city.name + "сохр. ", weather.city.lat, weather.city.lon, weather.temperature, weather.feelsLike)
     }
-
 
 
 }

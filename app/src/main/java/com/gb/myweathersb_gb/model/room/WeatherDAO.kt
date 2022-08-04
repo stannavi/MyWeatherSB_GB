@@ -22,4 +22,12 @@ interface WeatherDAO {
 
     @Query("SELECT * FROM weather_entity_table")
     fun getWeatherAll():List<WeatherEntity>
+
+    // CRUD
+    // INSERT INTO table_name (key1,key2) VALUES(value1,value2)
+    // SELECT * FROM table_name WHERE key1=1
+    // SELECT * FROM table_name WHERE lat IN(30,31,32,40)
+    // SELECT * FROM table_name WHERE lat  between 1 and 10
+    // UPDATE table_name SET name=newName WHERE key1=1
+    // DELETE FROM table_name WHERE key1=1
 }

@@ -30,7 +30,7 @@ class WeatherHistoryListViewModel(
     }
 
     private val callback = object : CommonListWeatherCallback {
-        override fun onResponse(listWeather: List<Weather>) {
+        override fun onResponse(listWeather: List <Weather>) {
             liveData.postValue(WeatherHistoryListFragmentAppState.SuccessMulti(listWeather))
         }
 

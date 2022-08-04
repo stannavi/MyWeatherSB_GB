@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gb.myweathersb_gb.MyApp
+import com.gb.myweathersb_gb.domain.City
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.model.*
 import com.gb.myweathersb_gb.model.retrofit.RepositoryRetrofitImpl
@@ -15,7 +16,7 @@ class DetailsViewModel(
 ) : ViewModel() {
 
     lateinit var repositoryWeatherByCity: RepositoryWeatherByCity
-    lateinit var repositoryWeatherAdd: RepositoryWeatherAdd
+    lateinit var repositoryWeatherAdd: RepositoryWeatherSave
 
     fun getLiveData(): MutableLiveData<DetailsFragmentAppState> {
         choiceRepository()
@@ -23,7 +24,7 @@ class DetailsViewModel(
     }
 
     private fun choiceRepository() {
-        val sp = MyApp.getMyApp().getSharedPreferences("db_source", Context.MODE_PRIVATE)
+        val sp = MyApp.getMyApp().getSharedPreferences("erhrth", Context.MODE_PRIVATE)
         if (isConnection()) {
             repositoryWeatherByCity = when (2) {
                 1 -> {
@@ -33,13 +34,22 @@ class DetailsViewModel(
                     RepositoryRetrofitImpl()
                 }
                 3 -> {
-                    RepositoryDetailsWeatherLoaderImpl()
+                    RepositoryWeatherLoaderImpl()
                 }
                 4 -> {
                     RepositoryRoomImpl()
                 }
                 else -> {
                     RepositoryLocalImpl()
+                }
+            }
+
+            repositoryWeatherAdd = when (0) {
+                1 -> {
+                    RepositoryRoomImpl()
+                }
+                else -> {
+                    RepositoryRoomImpl()
                 }
             }
         } else {
@@ -54,8 +64,6 @@ class DetailsViewModel(
                     RepositoryLocalImpl()
                 }
             }
-        }
-
             repositoryWeatherAdd = when (0) {
                 1 -> {
                     RepositoryRoomImpl()
@@ -65,15 +73,16 @@ class DetailsViewModel(
                 }
             }
         }
+    }
 
 
-        fun getWeather(weather: Weather) {
+        fun getWeather(city: City) {
             liveData.value = DetailsFragmentAppState.Loading
-            repositoryWeatherByCity.getWeather(weather, callback)
+            repositoryWeatherByCity.getWeather(city, callback)
 
         }
 
-        val callback = object : MyLargeSuperCallback {
+        private val callback = object : CommonWeatherCallback {
             override fun onResponse(weather: Weather) {
                 /*Handler(Looper.getMainLooper()).post {
 
@@ -86,7 +95,6 @@ class DetailsViewModel(
             override fun onFailure(e: IOException) {
                 liveData.postValue(DetailsFragmentAppState.Error(e))
             }
-
         }
 
 

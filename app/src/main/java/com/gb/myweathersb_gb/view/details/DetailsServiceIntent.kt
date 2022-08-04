@@ -19,7 +19,7 @@ import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
-class DetailServiceIntent : IntentService("") {
+class DetailsServiceIntent : IntentService("") {
 
     override fun onHandleIntent(intent: Intent?) {
         while (true) {

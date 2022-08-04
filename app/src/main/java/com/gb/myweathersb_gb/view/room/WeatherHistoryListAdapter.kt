@@ -1,4 +1,4 @@
-package com.gb.myweathersb_gb.view.details.room
+package com.gb.myweathersb_gb.view.room
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ class WeatherHistoryListAdapter(private val dataList:List<Weather>, private val 
     RecyclerView.Adapter<WeatherHistoryListAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        val binding= FragmentWeatherHistoryListRecyclerItemBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = FragmentWeatherHistoryListRecyclerItemBinding.inflate(LayoutInflater.from(parent.context))
         return WeatherViewHolder(binding.root)
     }
 
@@ -26,7 +26,7 @@ class WeatherHistoryListAdapter(private val dataList:List<Weather>, private val 
 
     inner class WeatherViewHolder(view: View): RecyclerView.ViewHolder(view){
         fun bind(weather: Weather){
-            val binding= FragmentWeatherHistoryListRecyclerItemBinding.bind(itemView)
+            val binding = FragmentWeatherHistoryListRecyclerItemBinding.bind(itemView)
             binding.cityName.text = weather.city.name
             binding.temperatureValue.text = weather.temperature.toString()
             binding.root.setOnClickListener {

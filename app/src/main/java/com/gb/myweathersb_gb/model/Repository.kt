@@ -5,18 +5,18 @@ import com.gb.myweathersb_gb.domain.Weather
 import java.io.IOException
 
 fun interface RepositoryWeatherByCity {
-    fun getWeather(city: City, callback: CommonOneWeatherCallback)
+    fun getWeather(city: City, callback: CommonWeatherCallback)
 }
 
 fun interface RepositoryWeatherAvailable {
     fun getWeatherAll(callback: CommonListWeatherCallback)
 }
 
-fun interface RepositoryWeatherAdd {
+fun interface RepositoryWeatherSave {
     fun addWeather(weather: Weather)
 }
 
-interface CommonOneWeatherCallback {
+interface CommonWeatherCallback {
     fun onResponse(weather: Weather)
     fun onFailure(e: IOException)
 }
@@ -24,10 +24,6 @@ interface CommonOneWeatherCallback {
 interface CommonListWeatherCallback {
     fun onResponse(weather: List<Weather>)
     fun onFailure(e: IOException)
-}
-
-fun interface RepositorySingle {
-    fun getWeather(lat: Double, lon: Double):Weather
 }
 
 fun interface RepositoryCitiesList {
