@@ -27,7 +27,7 @@ class WeatherHistoryListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstance() = WeatherHistoryListFragment()
     }
-
+//
     var isRussian = true
 
     var _binding: FragmentWeatherHistoryListBinding? = null
