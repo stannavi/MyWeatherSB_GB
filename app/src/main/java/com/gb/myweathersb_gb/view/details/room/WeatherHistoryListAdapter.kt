@@ -1,21 +1,18 @@
-package com.gb.myweathersb_gb.view.weatherlist
+package com.gb.myweathersb_gb.view.details.room
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.gb.myweathersb_gb.databinding.FragmentCitiesListBinding
-import com.gb.myweathersb_gb.databinding.FragmentCitiesListRecyclerItemBinding
+import com.gb.myweathersb_gb.databinding.FragmentWeatherHistoryListRecyclerItemBinding
 import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.view.details.OnItemClick
 
-class DetailsListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
-    RecyclerView.Adapter<DetailsListAdapter.WeatherViewHolder>() {
-
+class WeatherHistoryListAdapter(private val dataList:List<Weather>, private val callback: OnItemClick):
+    RecyclerView.Adapter<WeatherHistoryListAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        val binding =
-            FragmentCitiesListRecyclerItemBinding.inflate(LayoutInflater.from(parent.context))
+        val binding= FragmentWeatherHistoryListRecyclerItemBinding.inflate(LayoutInflater.from(parent.context))
         return WeatherViewHolder(binding.root)
     }
 
@@ -27,14 +24,13 @@ class DetailsListAdapter(private val dataList: List<Weather>, private val callba
         return dataList.size
     }
 
-    inner class WeatherViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(weather: Weather) {
-            val binding = FragmentCitiesListRecyclerItemBinding.bind(itemView)
+    inner class WeatherViewHolder(view: View): RecyclerView.ViewHolder(view){
+        fun bind(weather: Weather){
+            val binding= FragmentWeatherHistoryListRecyclerItemBinding.bind(itemView)
             binding.cityName.text = weather.city.name
+            binding.temperatureValue.text = weather.temperature.toString()
             binding.root.setOnClickListener {
-
                 callback.onItemClick(weather)
-
             }
         }
     }

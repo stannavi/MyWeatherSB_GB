@@ -1,16 +1,20 @@
 package com.gb.myweathersb_gb.model.retrofit
 
 import com.gb.myweathersb_gb.BuildConfig
-import com.gb.myweathersb_gb.model.MyLargeSuperCallback
-import com.gb.myweathersb_gb.model.RepositoryDetails
+import com.gb.myweathersb_gb.domain.City
+import com.gb.myweathersb_gb.domain.Weather
+import com.gb.myweathersb_gb.model.CommonListWeatherCallback
+import com.gb.myweathersb_gb.model.CommonOneWeatherCallback
+import com.gb.myweathersb_gb.model.RepositoryWeatherByCity
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
+import com.gb.myweathersb_gb.utils.bindDTOWithCity
 import com.google.gson.GsonBuilder
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-class RepositoryDetailsRetrofitImpl : RepositoryDetails {
-    override fun getWeather(lat: Double, lon: Double, callback: MyLargeSuperCallback) {
+class RepositoryRetrofitImpl : RepositoryWeatherByCity {
+    override fun getWeather(weather: Weather, callback: CommonListWeatherCallback) {
         val retrofitImpl = Retrofit.Builder()
         retrofitImpl.baseUrl("https://api.weather.yandex.ru")
         retrofitImpl.addConverterFactory(
@@ -20,12 +24,12 @@ class RepositoryDetailsRetrofitImpl : RepositoryDetails {
         )
         val api = retrofitImpl.build().create(WeatherAPI::class.java)
         //api.getWeather(BuildConfig.WEATHER_API_KEY, lat, lon).execute() // синхронный запрос
-        api.getWeather(BuildConfig.WEATHER_API_KEY, lat, lon)
+        api.getWeather(BuildConfig.WEATHER_API_KEY, weather.city.lat, weather.city.lon)
             .enqueue(object : Callback<WeatherDTO> {
                 override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
                     //response.raw().request // тут есть информация - кто же нас вызвал
                     if (response.isSuccessful && response.body() != null) {
-                        callback.onResponse(response.body()!!)
+                        callback.onResponse(bindDTOWithCity(response.body()!!, weather.city))
                     } else {
                         // TODO HW callback.on??? 403 404
                         callback.onFailure(IOException("403 404"))
@@ -37,4 +41,5 @@ class RepositoryDetailsRetrofitImpl : RepositoryDetails {
                 }
             })
     }
+
 }

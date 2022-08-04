@@ -41,8 +41,6 @@ class DetailsFragment : Fragment() {
             return _binding!!
         }
 
-    lateinit var weatherLocal: Weather
-
     val viewModel by lazy {
         ViewModelProvider(this).get(DetailsViewModel::class.java)
     }
@@ -65,11 +63,11 @@ class DetailsFragment : Fragment() {
         }
 
         weather?.let { weatherLocal ->
-            this.weatherLocal = weatherLocal
-            viewModel.getWeather(weatherLocal.city.lat, weatherLocal.city.lon)
+            viewModel.getWeather(weatherLocal)
             viewModel.getLiveData().observe(viewLifecycleOwner) {
                 renderData(it)
             }
+            viewModel.getWeather(it.city)
         }
     }
 
@@ -80,27 +78,14 @@ class DetailsFragment : Fragment() {
             DetailsFragmentAppState.Loading -> {}
             is DetailsFragmentAppState.Success -> {
                 with(binding) {
-                    val weatherDTO = detailsFragmentAppState.weatherData
-                    cityName.text = weatherLocal.city.name
-                    temperatureValue.text = weatherDTO.fact.temp.toString()
-                    feelsLikeValue.text = weatherDTO.fact.feelsLike.toString()
-                    cityCoordinates.text = "${weatherLocal.city.lat}/${weatherLocal.city.lon}"
+                    val weather = detailsFragmentAppState.weatherData
+                    cityName.text = weather.city.name
+                    temperatureValue.text = weather.temperature.toString()
+                    feelsLikeValue.text = weather.feelsLike.toString()
+                    cityCoordinates.text = "${weather.city.lat}/${weather.city.lon}"
 
 
-                    /*icon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png") {
-                        error(R.drawable.ic_earth)
-                        placeholder(R.drawable.ic_launcher_background)
-                        transformations(CircleCropTransformation())
-                    }*/
-
-                   /* Glide.with(this.root)
-                        .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-                        .into(icon)
-
-                    Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-                        .into(icon)*/
-
-                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
+                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
                 }
             }
         }

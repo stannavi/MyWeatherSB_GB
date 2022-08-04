@@ -1,22 +1,21 @@
 package com.gb.myweathersb_gb.model
 
-import android.util.Log
 import com.gb.myweathersb_gb.BuildConfig
-import com.gb.myweathersb_gb.domain.Weather
-import com.gb.myweathersb_gb.domain.getDefaultCity
+import com.gb.myweathersb_gb.domain.City
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.utils.YANDEX_API_KEY
+import com.gb.myweathersb_gb.utils.bindDTOWithCity
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 
-class RepositoryDetailsOKHttpImpl: RepositoryDetails {
-    override fun getWeather(lat: Double, lon: Double, callback: MyLargeSuperCallback) {
+class RepositoryOKHttpImpl: RepositoryWeatherByCity {
+    override fun getWeather(city: City, callback: CommonOneWeatherCallback) {
 
         val client = OkHttpClient()
         val builder = Request.Builder()
         builder.addHeader(YANDEX_API_KEY, BuildConfig.WEATHER_API_KEY)
-        builder.url("https://api.weather.yandex.ru/v2/informers?lat=${lat}&lon=${lon}")
+        builder.url("https://api.weather.yandex.ru/v2/informers?lat=${city.lat}&lon=${city.lon}")
         val request: Request = builder.build()
         val call: Call = client.newCall(request)
 
@@ -31,7 +30,7 @@ class RepositoryDetailsOKHttpImpl: RepositoryDetails {
                     response.body?.let {
                         val responseString = it.string()
                         val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
-                        callback.onResponse(weatherDTO)
+                        callback.onResponse(bindDTOWithCity(weatherDTO, city))
                     }
                 } else {
                     // TODO HW callback.on??? 403 404

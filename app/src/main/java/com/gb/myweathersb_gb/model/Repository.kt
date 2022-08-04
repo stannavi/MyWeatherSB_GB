@@ -1,15 +1,28 @@
 package com.gb.myweathersb_gb.model
 
+import com.gb.myweathersb_gb.domain.City
 import com.gb.myweathersb_gb.domain.Weather
-import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import java.io.IOException
 
-fun interface RepositoryDetails {
-    fun getWeather(lat: Double, lon: Double, callback: MyLargeSuperCallback)
+fun interface RepositoryWeatherByCity {
+    fun getWeather(city: City, callback: CommonOneWeatherCallback)
 }
 
-interface MyLargeSuperCallback {
-    fun onResponse(weatherDTO: WeatherDTO)
+fun interface RepositoryWeatherAvailable {
+    fun getWeatherAll(callback: CommonListWeatherCallback)
+}
+
+fun interface RepositoryWeatherAdd {
+    fun addWeather(weather: Weather)
+}
+
+interface CommonOneWeatherCallback {
+    fun onResponse(weather: Weather)
+    fun onFailure(e: IOException)
+}
+
+interface CommonListWeatherCallback {
+    fun onResponse(weather: List<Weather>)
     fun onFailure(e: IOException)
 }
 

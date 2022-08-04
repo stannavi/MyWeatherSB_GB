@@ -4,10 +4,9 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gb.myweathersb_gb.MyApp
+import com.gb.myweathersb_gb.domain.Weather
 import com.gb.myweathersb_gb.model.*
-import com.gb.myweathersb_gb.model.dto.WeatherDTO
-import com.gb.myweathersb_gb.model.retrofit.RepositoryDetailsRetrofitImpl
-import com.gb.myweathersb_gb.utils.SP_BD_NAME_IS_RUSSIAN
+import com.gb.myweathersb_gb.model.retrofit.RepositoryRetrofitImpl
 import java.io.IOException
 
 
@@ -15,7 +14,8 @@ class DetailsViewModel(
     private val liveData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()
 ) : ViewModel() {
 
-    lateinit var repository: RepositoryDetails
+    lateinit var repositoryWeatherByCity: RepositoryWeatherByCity
+    lateinit var repositoryWeatherAdd: RepositoryWeatherAdd
 
     fun getLiveData(): MutableLiveData<DetailsFragmentAppState> {
         choiceRepository()
@@ -24,51 +24,78 @@ class DetailsViewModel(
 
     private fun choiceRepository() {
         val sp = MyApp.getMyApp().getSharedPreferences("db_source", Context.MODE_PRIVATE)
-        repository = when (sp.getInt("sdgsdg", 2)) {
-            1 -> {
-                RepositoryDetailsOKHttpImpl()
+        if (isConnection()) {
+            repositoryWeatherByCity = when (2) {
+                1 -> {
+                    RepositoryOKHttpImpl()
+                }
+                2 -> {
+                    RepositoryRetrofitImpl()
+                }
+                3 -> {
+                    RepositoryDetailsWeatherLoaderImpl()
+                }
+                4 -> {
+                    RepositoryRoomImpl()
+                }
+                else -> {
+                    RepositoryLocalImpl()
+                }
             }
-            2 -> {
-                RepositoryDetailsRetrofitImpl()
-            }
-            3 -> {
-                RepositoryDetailsWeatherLoaderImpl()
-            }
-
-            else -> {
-                RepositoryDetailsLocalImpl()
+        } else {
+            repositoryWeatherByCity = when (1) {
+                1 -> {
+                    RepositoryRoomImpl()
+                }
+                2 -> {
+                    RepositoryLocalImpl()
+                }
+                else -> {
+                    RepositoryLocalImpl()
+                }
             }
         }
-    }
 
-
-    fun getWeather(lat: Double, lon: Double) {
-
-        choiceRepository()
-        liveData.value = DetailsFragmentAppState.Loading
-        repository.getWeather(lat, lon, callback)
-
-    }
-
-    val callback = object: MyLargeSuperCallback {
-        override fun onResponse(weatherDTO: WeatherDTO) {
-            /*Handler(Looper.getMainLooper()).post {
-
-            }*/
-            liveData.postValue(DetailsFragmentAppState.Success(weatherDTO))
+            repositoryWeatherAdd = when (0) {
+                1 -> {
+                    RepositoryRoomImpl()
+                }
+                else -> {
+                    RepositoryRoomImpl()
+                }
+            }
         }
 
-        override fun onFailure(e: IOException) {
-            liveData.postValue(DetailsFragmentAppState.Error(e))
+
+        fun getWeather(weather: Weather) {
+            liveData.value = DetailsFragmentAppState.Loading
+            repositoryWeatherByCity.getWeather(weather, callback)
+
         }
 
-    }
+        val callback = object : MyLargeSuperCallback {
+            override fun onResponse(weather: Weather) {
+                /*Handler(Looper.getMainLooper()).post {
 
-    private fun isConnection(): Boolean {
-        return false
-    }
+                }*/
+                if (isConnection())
+                    repositoryWeatherAdd.addWeather(weather)
+                liveData.postValue(DetailsFragmentAppState.Success(weather))
+            }
 
-    override fun onCleared() {// TODO HW ***
-        super.onCleared()
+            override fun onFailure(e: IOException) {
+                liveData.postValue(DetailsFragmentAppState.Error(e))
+            }
+
+        }
+
+
+
+        fun isConnection(): Boolean {// TODO HW реализация
+            return true
+        }
+
+        override fun onCleared() {
+            super.onCleared()
+        }
     }
-}
