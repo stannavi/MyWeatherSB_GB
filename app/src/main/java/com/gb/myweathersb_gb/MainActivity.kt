@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gb.myweathersb_gb.databinding.ActivityMainBinding
 import com.gb.myweathersb_gb.utils.SP_DB_NAME_IS_RUSSIAN
 import com.gb.myweathersb_gb.utils.SP_KEY_IS_RUSSIAN
+import com.gb.myweathersb_gb.view.contentprovider.ContentProviderFragment
 import com.gb.myweathersb_gb.view.room.WeatherHistoryListFragment
 import com.gb.myweathersb_gb.view.weatherlist.CitiesListFragment
 
@@ -41,5 +42,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_screen_menu, menu)
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+
+            R.id.menu_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, WeatherHistoryListFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_content_provider -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, ContentProviderFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

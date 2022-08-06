@@ -8,5 +8,6 @@
     <string name="reload">Reload</string>
     <string name="threads" />
     <string name="history" />
+    <string name="content_provider">content_provider</string>
 
 </resources>
