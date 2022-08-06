@@ -47,12 +47,38 @@ class ContentProviderFragment : Fragment() {
     }
 
     fun checkPermission() {
-        val permResult = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
+        val permResult =
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
         PackageManager.PERMISSION_GRANTED
-        if (permResult == PackageManager.PERMISSION_GRANTED){
+        if (permResult == PackageManager.PERMISSION_GRANTED) {
             getContacts()
+        } else {
+            permissionRequest(Manifest.permission.READ_CONTACTS)
         }
         Log.d("@@@", "${permResult}")
+    }
+
+    fun permissionRequest(permission: String) {
+        requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)
+    }
+
+    private val REQUEST_CODE_READ_CONTACTS = 999
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_READ_CONTACTS) {
+            for (pIndex in permissions.indices) {
+                if (permissions[pIndex] == Manifest.permission.READ_CONTACTS
+                    && grantResults[pIndex] == PackageManager.PERMISSION_GRANTED) {
+                    getContacts()
+                    Log.d("@@@", "Ура")
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun getContacts() {
