@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -53,14 +54,14 @@ class ContentProviderFragment : Fragment() {
         PackageManager.PERMISSION_GRANTED
         if (permResult == PackageManager.PERMISSION_GRANTED) {
             getContacts()
-        } else if(shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
             AlertDialog.Builder(requireContext())
                 .setTitle("Доступ к контактам")
                 .setMessage("Объяснение Объяснение Объяснение Объяснение")
-                .setPositiveButton("Предоставить доступ") {_, _ ->
+                .setPositiveButton("Предоставить доступ") { _, _ ->
                     permissionRequest(Manifest.permission.READ_CONTACTS)
                 }
-                .setNegativeButton("Не надо") {dialog, _ -> dialog.dismiss()}
+                .setNegativeButton("Не надо") { dialog, _ -> dialog.dismiss() }
                 .create()
                 .show()
         } else {
@@ -96,6 +97,7 @@ class ContentProviderFragment : Fragment() {
 
     private fun getContacts() {
         val contentResolver: ContentResolver = requireContext().contentResolver
+        // Отправляем запрос на получение контактов и получаем ответ в виде Cursor
         val cursorWithContacts: Cursor? = contentResolver.query(
             ContactsContract.Contacts.CONTENT_URI,
             null,
@@ -103,6 +105,19 @@ class ContentProviderFragment : Fragment() {
             null,
             ContactsContract.Contacts.DISPLAY_NAME + " ASC"
         )
+
+        cursorWithContacts?.let { cursor ->
+            for (i in 0 until cursor.count) { // аналог  0..cursorWithContacts.count - 1
+                cursor.moveToPosition(i)
+                val name =
+                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                binding.containerForContacts.addView(TextView(requireContext()).apply {
+                    text = name
+                    textSize = 25f
+                })
+            }
+        }
+        cursorWithContacts?.close()
     }
 
     override fun onDestroy() {
