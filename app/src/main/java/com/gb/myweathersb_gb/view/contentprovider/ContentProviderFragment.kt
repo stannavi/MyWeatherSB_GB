@@ -109,8 +109,9 @@ class ContentProviderFragment : Fragment() {
         cursorWithContacts?.let { cursor ->
             for (i in 0 until cursor.count) { // аналог  0..cursorWithContacts.count - 1
                 cursor.moveToPosition(i)
+                val index = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
                 val name =
-                    cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                    cursor.getString(index)
                 binding.containerForContacts.addView(TextView(requireContext()).apply {
                     text = name
                     textSize = 25f
