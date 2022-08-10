@@ -8,7 +8,11 @@ import com.gb.myweathersb_gb.model.room.WeatherEntity
 class RepositoryRoomImpl: RepositoryWeatherByCity, RepositoryWeatherSave, RepositoryWeatherAvailable {
     override fun getWeather(city: City, callback: CommonWeatherCallback) {
             callback.onResponse(MyApp.getWeatherDatabase().weatherDao().getWeatherByLocation(city.lat, city.lon).let {
-                convertHistoryEntityToWeather(it).last()
+                if (it.size>=0) {
+                    convertHistoryEntityToWeather(it).last()
+                } else {
+                    Weather(city)//FIXME не всегда в room может быть погода
+                }
             })
     }
 
