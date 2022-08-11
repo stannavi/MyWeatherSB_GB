@@ -10,6 +10,7 @@ import com.gb.myweathersb_gb.databinding.ActivityMainBinding
 import com.gb.myweathersb_gb.utils.SP_DB_NAME_IS_RUSSIAN
 import com.gb.myweathersb_gb.utils.SP_KEY_IS_RUSSIAN
 import com.gb.myweathersb_gb.view.contentprovider.ContentProviderFragment
+import com.gb.myweathersb_gb.view.maps.MapsFragment
 import com.gb.myweathersb_gb.view.room.WeatherHistoryListFragment
 import com.gb.myweathersb_gb.view.weatherlist.CitiesListFragment
 
@@ -60,6 +61,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .replace(R.id.container, ContentProviderFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_google_maps -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container, MapsFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
