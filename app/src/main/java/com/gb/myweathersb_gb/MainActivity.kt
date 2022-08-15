@@ -5,18 +5,18 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager.getDefaultSharedPreferences
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.gb.myweathersb_gb.databinding.ActivityMainBinding
-import com.gb.myweathersb_gb.utils.SP_DB_NAME_IS_RUSSIAN
-import com.gb.myweathersb_gb.utils.SP_KEY_IS_RUSSIAN
 import com.gb.myweathersb_gb.view.contentprovider.ContentProviderFragment
 import com.gb.myweathersb_gb.view.maps.MapsFragment
 import com.gb.myweathersb_gb.view.room.WeatherHistoryListFragment
 import com.gb.myweathersb_gb.view.weatherlist.CitiesListFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,12 +32,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         pushNotification("title","body")
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("@@@", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            //Get new FCM registration token
+            val token = task.result
+            Log.d("@@@", "$token")
+        })
     }
 
     val CHANNEL_HIGH_ID = "channel_high"
     val CHANNEL_LOW_ID = "channel_low"
     val NOTIFICATION_ID1 = 1
-    val NOTIFICATION_ID2 = 1
+    val NOTIFICATION_ID2 = 2
 
     private fun pushNotification(title:String, body:String){
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -3,7 +3,9 @@ package com.gb.myweathersb_gb.viewmodel.weatherhistorylist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gb.myweathersb_gb.domain.Weather
-import com.gb.myweathersb_gb.model.*
+import com.gb.myweathersb_gb.model.CommonListWeatherCallback
+import com.gb.myweathersb_gb.model.RepositoryRoomImpl
+import com.gb.myweathersb_gb.model.RepositoryWeatherAvailable
 import java.io.IOException
 
 

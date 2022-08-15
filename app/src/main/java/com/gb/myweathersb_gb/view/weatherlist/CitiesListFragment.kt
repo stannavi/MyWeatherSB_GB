@@ -16,7 +16,6 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentCitiesListBinding
@@ -26,12 +25,10 @@ import com.gb.myweathersb_gb.utils.SP_DB_NAME_IS_RUSSIAN
 import com.gb.myweathersb_gb.utils.SP_KEY_IS_RUSSIAN
 import com.gb.myweathersb_gb.view.details.DetailsFragment
 import com.gb.myweathersb_gb.view.details.OnItemClick
-import com.gb.myweathersb_gb.viewmodel.citieslist.CityListFragmentAppState
 import com.gb.myweathersb_gb.viewmodel.citieslist.CitiesListViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.gb.myweathersb_gb.viewmodel.citieslist.CityListFragmentAppState
 import java.util.*
 import kotlin.system.measureTimeMillis
-import kotlin.time.measureTime
 
 class CitiesListFragment : Fragment(), OnItemClick {
     companion object {

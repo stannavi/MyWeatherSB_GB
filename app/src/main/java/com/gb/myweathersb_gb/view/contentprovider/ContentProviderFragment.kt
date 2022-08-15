@@ -11,19 +11,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import coil.ImageLoader
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.gb.myweathersb_gb.databinding.FragmentContentProviderBinding
-import com.gb.myweathersb_gb.databinding.FragmentDetailsBinding
-import com.gb.myweathersb_gb.domain.Weather
-import com.gb.myweathersb_gb.viewmodel.details.DetailsFragmentAppState
-import com.gb.myweathersb_gb.viewmodel.details.DetailsViewModel
 
 
 class ContentProviderFragment : Fragment() {

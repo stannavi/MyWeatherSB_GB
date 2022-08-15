@@ -2,7 +2,9 @@ package com.gb.myweathersb_gb.viewmodel.citieslist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.gb.myweathersb_gb.model.*
+import com.gb.myweathersb_gb.model.Location
+import com.gb.myweathersb_gb.model.RepositoryCitiesList
+import com.gb.myweathersb_gb.model.RepositoryCitiesListImpl
 import kotlin.random.Random
 
 

@@ -6,7 +6,6 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import android.provider.ContactsContract
 import com.gb.myweathersb_gb.MyApp.Companion.getWeatherDatabase
 import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.model.room.WeatherEntity

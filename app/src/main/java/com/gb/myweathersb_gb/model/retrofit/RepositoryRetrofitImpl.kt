@@ -7,7 +7,10 @@ import com.gb.myweathersb_gb.model.RepositoryWeatherByCity
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.utils.bindDTOWithCity
 import com.google.gson.GsonBuilder
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 

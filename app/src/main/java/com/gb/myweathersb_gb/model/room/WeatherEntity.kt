@@ -2,7 +2,6 @@ package com.gb.myweathersb_gb.model.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import coil.drawable.CrossfadeDrawable
 import com.gb.myweathersb_gb.R
 
 @Entity(tableName = "weather_entity_table")

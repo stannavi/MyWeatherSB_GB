@@ -1,7 +1,5 @@
 package com.gb.myweathersb_gb.utils
 
-import android.os.Handler
-import android.os.Looper
 import com.gb.myweathersb_gb.BuildConfig
 import com.gb.myweathersb_gb.model.dto.WeatherDTO
 import com.gb.myweathersb_gb.view.details.OnReponse
