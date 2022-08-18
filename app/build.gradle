@@ -30,9 +30,45 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
+    signingConfigs {
+        hgdhjg {
+
+            Properties properties = new Properties()
+            properties.load(rootProject.file("passwordHgdhjg.properties").newDataInputStream())
+            def password = properties.getProperty("password") //FIXME
+            storeFile file("hgdhjg.jks")
+            storePassword = password
+            keyAlias 'alias'
+            keyPassword = password
+        }
+
         release {
-            minifyEnabled false
+
+            Properties properties = new Properties()
+            properties.load(rootProject.file("passwordRelease.properties").newDataInputStream())
+            def password = properties.getProperty("password") //FIXME
+            storeFile file("release.jks")
+            storePassword = password
+            keyAlias 'alias'
+            keyPassword = password
+        }
+    }
+
+    buildTypes {
+
+        hgdhjg {
+            signingConfig = signingConfigs.hgdhjg
+            multiDexEnabled true // больше 65536 методов
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig = signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -42,6 +78,15 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    flavorDimensions 'version'
+    productFlavors {
+        PRO {
+            dimension 'version'
+        }
+        FREE {
+            dimension 'version'
+        }
     }
 }
 

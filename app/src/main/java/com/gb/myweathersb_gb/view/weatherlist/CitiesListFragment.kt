@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.gb.myweathersb_gb.MyApp
 import com.gb.myweathersb_gb.R
 import com.gb.myweathersb_gb.databinding.FragmentCitiesListBinding
 import com.gb.myweathersb_gb.domain.City
