@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.Fragment
 import com.gb.myweathersb_gb.databinding.ActivityMainBinding
 import com.gb.myweathersb_gb.view.contentprovider.ContentProviderFragment
 import com.gb.myweathersb_gb.view.maps.MapsFragment
@@ -25,14 +26,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.myRoot)
-
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CitiesListFragment.newInstance()).commit()
         }
-
         pushNotification("title","body")
+        getToken()
+    }
 
+    private fun getToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("@@@", "Fetching FCM registration token failed", task.exception)
@@ -89,33 +91,27 @@ class MainActivity : AppCompatActivity() {
         return when(item.itemId) {
 
             R.id.menu_history -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, WeatherHistoryListFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
+                navigationTo(WeatherHistoryListFragment())
                 true
             }
             R.id.menu_content_provider -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, ContentProviderFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
+                navigationTo(ContentProviderFragment())
                 true
             }
             R.id.menu_google_maps -> {
-                supportFragmentManager.apply {
-                    beginTransaction()
-                        .replace(R.id.container, MapsFragment())
-                        .addToBackStack("")
-                        .commitAllowingStateLoss()
-                }
+                navigationTo(MapsFragment())
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun navigationTo(fr: Fragment) {
+        supportFragmentManager.apply {
+            beginTransaction()
+                .replace(R.id.container, fr)
+                .addToBackStack("")
+                .commitAllowingStateLoss()
         }
     }
 }
